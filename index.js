@@ -9,21 +9,6 @@ for (let i = 0; i < collisions.length; i += 70) {
   collisionsMap.push(collisions.slice(i, 70 + i));
 }
 
-class Boundary {
-  static width = 48;
-  static height = 48;
-  constructor({ position }) {
-    this.position = position;
-    this.width = 48;
-    this.height = 48;
-  }
-
-  draw() {
-    c.fillStyle = "rgba(255, 0, 0, 0.0)";
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  }
-}
-
 const boundaries = [];
 const offset = { x: -776, y: -600 };
 
@@ -48,35 +33,11 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 const image = new Image();
 image.src = "img/PelletTown.png";
 
+const foregroundImage = new Image();
+foregroundImage.src = "img/foregroundObjects.png";
+
 const playerImage = new Image();
 playerImage.src = "img/playerDown.png";
-
-class Sprite {
-  constructor({ position, image, frames = { max: 1 } }) {
-    this.position = position;
-    this.image = image;
-    this.frames = frames;
-
-    this.image.onload = () => {
-      this.width = image.width / this.frames.max;
-      this.height = image.height;
-    };
-  }
-
-  draw() {
-    c.drawImage(
-      this.image,
-      0,
-      0,
-      this.image.width / this.frames.max,
-      this.image.height,
-      this.position.x,
-      this.position.y,
-      this.image.width / this.frames.max,
-      this.image.height
-    );
-  }
-}
 
 // Player sempre centralizado no canvas
 const player = new Sprite({
@@ -102,7 +63,7 @@ const foreground = new Sprite({
     x: offset.x,
     y: offset.y,
   },
-  image: image,
+  image: foregroundImage,
 });
 
 const keys = {
@@ -115,7 +76,7 @@ const keys = {
 let lastKey = "";
 
 const testBoundary = new Boundary({ position: { x: 400, y: 400 } });
-const movables = [background, ...boundaries];
+const movables = [background, ...boundaries, foreground];
 
 image.onload = () => {
   function rectangularCollision({ rectangle1, rectangle2 }) {
@@ -133,6 +94,7 @@ image.onload = () => {
     background.draw();
     boundaries.forEach((boundary) => boundary.draw());
     player.draw();
+    foreground.draw();
 
     let moving = true;
 
