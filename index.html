@@ -25,6 +25,9 @@
     </style>
   </head>
   <body>
+    <!-- Música de fundo -->
+    <audio id="backgroundMusic" src="audio/map.wav" loop></audio>
+
     <canvas></canvas>
 
     <!-- Scripts do jogo -->
@@ -33,21 +36,20 @@
     <script src="index.js"></script>
 
     <script>
-      // Música de fundo
-      const backgroundMusic = new Audio("audio/map.wav");
-      backgroundMusic.loop = true;
+      const backgroundMusic = document.getElementById("backgroundMusic");
       backgroundMusic.volume = 0.1;
 
-      // Tenta tocar automaticamente no desktop
+      // Toca automaticamente no desktop, se possível
       backgroundMusic.play().catch(() => {});
 
-      // No mobile: toca quando o usuário interagir
-      function playMusicOnTouch() {
-        backgroundMusic.play().catch(() => {});
-        window.removeEventListener("touchstart", playMusicOnTouch);
-      }
-
-      window.addEventListener("touchstart", playMusicOnTouch, { once: true });
+      // Toca no mobile no primeiro toque
+      window.addEventListener(
+        "touchstart",
+        () => {
+          backgroundMusic.play().catch(() => {});
+        },
+        { once: true }
+      );
     </script>
   </body>
 </html>
