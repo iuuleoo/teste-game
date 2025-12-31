@@ -7,7 +7,7 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 // Função para definir a velocidade
 function getSpeed() {
   if (isMobile) {
-    return Math.min(canvas.width, canvas.height) * 0.4; // mais rápido no mobile
+    return Math.min(canvas.width, canvas.height) * 0.6; // mais rápido no mobile
   } else {
     return 2; // velocidade fixa no PC
   }
@@ -111,16 +111,16 @@ const backgroundMusic = new Audio("audio/map.wav"); // caminho da música
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1; // volume baixo
 
-// Toca música no toque para mobile
+// Função para tocar a música
 function playMusic() {
   backgroundMusic.play().catch(() => {});
   window.removeEventListener("touchstart", playMusic);
 }
 
-// Evento de toque no mobile
+// Mobile: inicia música no primeiro toque
 window.addEventListener("touchstart", playMusic, { once: true });
 
-// Tenta tocar automaticamente no desktop
+// Desktop: tenta tocar automaticamente
 backgroundMusic.play().catch(() => {});
 
 // Função principal após carregar o background
