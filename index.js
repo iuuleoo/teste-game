@@ -1,8 +1,13 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
-canvas.width = 1024;
-canvas.height = 576;
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 const collisionsMap = [];
 for (let i = 0; i < collisions.length; i += 70) {
@@ -51,8 +56,8 @@ playerRightImage.src = "img/playerRight.png";
 // Player sempre centralizado no canvas
 const player = new Sprite({
   position: {
-    x: canvas.width / 2 - 192 / 1 / 3,
-    y: canvas.height / 2 - 7,
+    x: canvas.width / 2 / 1 / 2 - 32,
+    y: canvas.height / 3 - 1,
   },
   image: playerDownImage,
   frames: { max: 4 },
