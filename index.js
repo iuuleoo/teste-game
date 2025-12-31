@@ -7,7 +7,7 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 // Função para definir a velocidade
 function getSpeed() {
   if (isMobile) {
-    return Math.min(canvas.width, canvas.height) * 0.25; // bem mais rápido
+    return Math.min(canvas.width, canvas.height) * 0.4; // mais rápido no mobile
   } else {
     return 2; // velocidade fixa no PC
   }
@@ -106,13 +106,22 @@ let lastKey = "";
 
 const movables = [background, ...boundaries, foreground];
 
-// 🎵 Música de fundo (começa automaticamente e volume mais baixo)
-const backgroundMusic = new Audio("audio/map.wav"); // coloque o caminho correto da sua música
+// 🎵 Música de fundo
+const backgroundMusic = new Audio("audio/map.wav"); // caminho da música
 backgroundMusic.loop = true;
-backgroundMusic.volume = 0.1; // volume mais baixo
-backgroundMusic.play().catch(() => {
-  // Alguns navegadores bloqueiam autoplay, então podemos ignorar o erro
-});
+backgroundMusic.volume = 0.1; // volume baixo
+
+// Toca música no toque para mobile
+function playMusic() {
+  backgroundMusic.play().catch(() => {});
+  window.removeEventListener("touchstart", playMusic);
+}
+
+// Evento de toque no mobile
+window.addEventListener("touchstart", playMusic, { once: true });
+
+// Tenta tocar automaticamente no desktop
+backgroundMusic.play().catch(() => {});
 
 // Função principal após carregar o background
 image.onload = () => {
